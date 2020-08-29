@@ -6,7 +6,7 @@ int min(int a, int b){
     return (a < b ? a : b);
 }
 int minCoins(int arr[], int sum, int n){
-    int i,j;
+    int i,j, res;
     int T[n+1][sum+1];
     for(i=0; i<n+1; i++){
         for(j=0; j<sum+1; j++){
@@ -16,14 +16,14 @@ int minCoins(int arr[], int sum, int n){
                 T[i][j] = INT_MAX - 1;
         }
     }
-    for(j=1; j<sum+1; j++){
-        if(j%arr[0] == 0)
-            T[1][j] = j/arr[0];
-        else
-            T[1][j] = INT_MAX - 1;
-    }
-    for(i=2; i<n+1; i++){
-        for(j=1; i<sum+1; j++){
+    // for(j=1; j<sum+1; j++){
+    //     if(j%arr[0] == 0)
+    //         T[1][j] = j/arr[0];
+    //     else
+    //         T[1][j] = INT_MAX - 1;
+    // }
+    for(i=1; i<n+1; i++){
+        for(j=1; j<sum+1; j++){
             if(arr[i-1] <= j){
                 T[i][j] = min((1 + T[i][j - arr[i-1]]), T[i-1][j]);
             }
@@ -32,7 +32,11 @@ int minCoins(int arr[], int sum, int n){
             
         }
     }
-    return T[n][sum];
+    res = T[n][sum];
+    if(res == INT_MAX - 1)
+        return -1;
+    else
+        return res;
 }
 int main(){
     int t;
